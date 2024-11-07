@@ -7,10 +7,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ParkingSystem {
     static List<Car> cars = new ArrayList<>();
     static Semaphore parkingSemaphore = new Semaphore(4);
+    private static final Lock lock = new ReentrantLock();
 
     private static Car parseInput(String line) {
         Car car = new Car();
@@ -66,6 +69,7 @@ public class ParkingSystem {
                 try {
                     // Simulate the arrival time
                     Thread.sleep(car.getArrivalTime() * 1000);
+                    lock.lock();
                     System.out.println("Car " + car.getId() + " from Gate " + car.getGate() + " arrived at time " + car.getArrivalTime());
 
                     // Attempt to acquire a parking spot
@@ -73,6 +77,7 @@ public class ParkingSystem {
                         // Car parks if a spot is available
                         System.out.println("Car " + car.getId() + " from Gate " + car.getGate() + " parked. " +
                                 "(Parking Status: " + (4 - parkingSemaphore.availablePermits()) + " spots occupied)");
+                        lock.unlock();
 
                         // Simulate the parking duration
                         Thread.sleep(car.getParkingDuration() * 1000);
@@ -86,6 +91,7 @@ public class ParkingSystem {
                     else {
                         // Car waits if no spot is available
                         System.out.println("Car " + car.getId() + " from Gate " + car.getGate() + " waiting for a spot.");
+                        lock.unlock();
 
                         // Wait for a spot, then acquire it when available
                         parkingSemaphore.acquire();
