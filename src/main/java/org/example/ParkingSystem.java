@@ -54,7 +54,9 @@ public class ParkingSystem {
 
     private static void sortCars() {
         cars.sort(Comparator.comparingInt(Car::getArrivalTime)
-                .thenComparingInt(Car::getGate).thenComparingInt(Car::getId));
+                .thenComparingInt(Car::getGate)
+                .thenComparingInt(Car::getId)
+                .thenComparingInt(Car::getParkingDuration));
     }
 
     private static void simulateParkingSystem() {
