@@ -9,7 +9,7 @@ public class ParkingSystem {
         // Scanner for user input
         Scanner userInputScanner = new Scanner(System.in);
 
-        System.out.print("Welcome to the Parking System, Please enter your file name: ");
+        System.out.print("Welcome to Parking System Simulator, Please enter file name: ");
         String fileName = userInputScanner.nextLine();
 
         // Try-catch block for handling FileNotFoundException
