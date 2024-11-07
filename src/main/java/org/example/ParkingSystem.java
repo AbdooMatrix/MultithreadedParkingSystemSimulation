@@ -77,11 +77,11 @@ public class ParkingSystem {
                         // Simulate the parking duration
                         Thread.sleep(car.getParkingDuration() * 1000);
 
+                        parkingSemaphore.release();
                         // Car leaves the parking spot
                         System.out.println("Car " + car.getId() + " from Gate " + car.getGate() + " left after " +
                                 car.getParkingDuration() + " units of time. " +
                                 "(Parking Status: " + (4 - parkingSemaphore.availablePermits()) + " spots occupied)");
-                        parkingSemaphore.release();
                     }
                     else {
                         // Car waits if no spot is available
@@ -95,11 +95,11 @@ public class ParkingSystem {
                         // Simulate the parking duration after waiting
                         Thread.sleep(car.getParkingDuration() * 1000);
 
+                        parkingSemaphore.release();
                         // Car leaves the parking spot
                         System.out.println("Car " + car.getId() + " from Gate " + car.getGate() + " left after " +
                                 car.getParkingDuration() + " units of time. " +
                                 "(Parking Status: " + (4 - parkingSemaphore.availablePermits()) + " spots occupied)");
-                        parkingSemaphore.release();
                     }
                 } catch (InterruptedException e) {
                     System.out.println("Car " + car.getId() + " was interrupted.");
