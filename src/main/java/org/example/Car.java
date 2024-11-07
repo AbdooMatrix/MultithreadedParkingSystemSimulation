@@ -1,15 +1,10 @@
 package org.example;
 
-public class Car implements Runnable {
+public class Car {
     private int id;
     private int gate;
     private int arrivalTime;
     private int parkingDuration;
-
-    @Override
-    public void run() {
-
-    }
 
     void setId (int id) {
         this.id = id;

@@ -74,7 +74,8 @@ public class ParkingSystem {
                                 car.getParkingDuration() + " units of time. " +
                                 "(Parking Status: " + (4 - parkingSemaphore.availablePermits()) + " spots occupied)");
                         parkingSemaphore.release();
-                    } else {
+                    }
+                    else {
                         // Car waits if no spot is available
                         System.out.println("Car " + car.getId() + " from Gate " + car.getGate() + " waiting for a spot.");
 

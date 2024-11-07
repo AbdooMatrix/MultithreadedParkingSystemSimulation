@@ -1,14 +1,13 @@
 package org.example;
 
-public class Gate implements Runnable {
-    int servedCars = 0;
-
-    @Override
-    public void run() {}
+public class Gate {
+    private static int servedCars = 0;
 
     int getServedCars() {
         return servedCars;
     }
-
+    void incrementServedCars() {
+        servedCars++;
+    }
 
 }
