@@ -3,6 +3,7 @@ package org.example;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.Semaphore;
@@ -49,6 +50,11 @@ public class ParkingSystem {
             System.out.println("File not found: " + fileName);
             e.printStackTrace();
         }
+    }
+
+    private static void sortCars() {
+        cars.sort(Comparator.comparingInt(Car::getArrivalTime)
+                .thenComparingInt(Car::getGate).thenComparingInt(Car::getId));
     }
 
     private static void simulateParkingSystem() {
@@ -108,6 +114,8 @@ public class ParkingSystem {
         userInputScanner.close();
 
         readFromFile(fileName);
+
+        sortCars();
 
         simulateParkingSystem();
     }
