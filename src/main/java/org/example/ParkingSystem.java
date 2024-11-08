@@ -59,7 +59,7 @@ public class ParkingSystem {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Scanner sc = new Scanner(System.in);
 
         System.out.print("Welcome to Parking System Simulator, Please enter file name: ");
@@ -67,11 +67,12 @@ public class ParkingSystem {
 
         readFromFile(fileName);
 
+
         for(Car car : cars){
-            System.out.println(car.name);
+            car.start();
         }
 
-
+        
 
         sc.close();
 

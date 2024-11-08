@@ -11,11 +11,17 @@ class Semaphore {
 
     // P() method (also known as "wait" or "acquire") to acquire a permit.
     // This method will block (wait) if there are no permits available (value <= 0).
-    public synchronized void P() throws InterruptedException {
+    public synchronized int P() throws InterruptedException {
+
+        int waitTime = 0 ;
+
         while (value <= 0) {  // If no permits are available, wait until one is released.
+            Thread.sleep(1000);
             wait(); // Put the current thread in a waiting state until notify() is called.
+            waitTime++ ;
         }
         value--; // Once a permit is available, decrease the count (acquire the permit).
+        return waitTime ;
     }
 
     // V() method (also known as "signal" or "release") to release a permit.
