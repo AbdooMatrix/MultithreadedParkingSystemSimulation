@@ -72,7 +72,9 @@ public class ParkingSystem {
             car.start();
         }
 
-        
+        for (Car car : cars) {
+            car.join();
+        }
 
         sc.close();
 

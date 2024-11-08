@@ -21,9 +21,8 @@ public class Car extends Thread {
     public void run() {
         try {
             Thread.sleep(arriveTime * 1000);
-            System.out.println(name + " arrived at time " + arriveTime);
 
-            lot.parkCar(name , parkingDuration);
+            lot.parkCar(name , parkingDuration, arriveTime);
 
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
