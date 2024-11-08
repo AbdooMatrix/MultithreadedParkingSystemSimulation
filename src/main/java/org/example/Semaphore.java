@@ -15,6 +15,6 @@ class Semaphore {
     }
     public synchronized void V() {
         value++;
-        notify();
+        notify(); // signal
     }
 }
