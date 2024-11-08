@@ -1,34 +1,26 @@
 package org.example;
 
-public class Car extends Thread {
-    private int gate ;
-    private int id  ;
-    private int arriveTime ;
-    private int parkingDuration ;
-    public String name ;
-    private ParkingLot lot ;
+class Car extends Thread {
+    private final String carName;
+    private final int arrivalTime;
+    private final int parkDuration;
+    private final ParkingLot parkingLot;
 
-    Car(int gate , int id , int arriveTime , int parkingDuration , ParkingLot lot) {
-        this.gate = gate ; // gate number
-        this.id = id; // car id
-        this.arriveTime = arriveTime ;
-        this.parkingDuration = parkingDuration ;
-        this.lot = lot ;
-        name = "Car " + id + " from gate " + gate    ;
+    public Car(String carName, int arrivalTime, int parkDuration, ParkingLot parkingLot) {
+        this.carName = carName;
+        this.arrivalTime = arrivalTime;
+        this.parkDuration = parkDuration;
+        this.parkingLot = parkingLot;
     }
 
     @Override
     public void run() {
         try {
-            Thread.sleep(arriveTime * 1000);
-            System.out.println(name + " arrived at time " + arriveTime);
-
-            lot.parkCar(name , parkingDuration);
-
+            Thread.sleep(arrivalTime * 1000); // Simulate arrival delay
+            System.out.println(carName + " arrived at time " + arrivalTime);
+            parkingLot.parkCar(carName, parkDuration);
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
-
-
 }
