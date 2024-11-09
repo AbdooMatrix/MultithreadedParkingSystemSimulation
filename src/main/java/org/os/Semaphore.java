@@ -12,7 +12,6 @@ class Semaphore {
         while (value == 0) {
             wait(); // Wait until a permit is available
         }
-
         value--; // Decrease the available permit count
     }
 

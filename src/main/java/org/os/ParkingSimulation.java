@@ -61,7 +61,6 @@ public class ParkingSimulation {
 
         readFromFile(fileName);
 
-
         for(Car car : cars){
             car.start();
         }

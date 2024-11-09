@@ -1,6 +1,7 @@
 package org.os;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReentrantLock;
 
 class ParkingLot {
     int size=4;
@@ -8,10 +9,11 @@ class ParkingLot {
     private final Semaphore element= new Semaphore(0);;
     private final AtomicInteger occupiedSpots = new AtomicInteger(0); // Tracks currently parked cars
     private final AtomicInteger totalCarsServed = new AtomicInteger(0); // Tracks total cars served
-
+    private final ReentrantLock printLock = new ReentrantLock();
 
     // Method to simulate parking a car
     public void parkCar(String carName, int parkDuration, int arrivalTime) throws InterruptedException {
+        printLock.lock();
         System.out.println(carName + " arrived at time " + arrivalTime);
 
         long startWaitTime = System.currentTimeMillis();
@@ -20,6 +22,7 @@ class ParkingLot {
         if (space.getvalue() > 0) { // If a spot is available, park immediately
             space.P(); // Acquire a parking spot
             log(carName + " parked. (Parking Status: " + occupiedSpots.incrementAndGet() + " spots occupied)");
+            printLock.unlock();
             element.V(); // Indicate a car is parked
             totalCarsServed.incrementAndGet();
 
@@ -34,6 +37,7 @@ class ParkingLot {
         } else {
             // Car waits for a spot
             log(carName + " waiting for a spot.");
+            printLock.unlock();
             space.P(); // Wait until a spot is available
 
             long waitedTime = (System.currentTimeMillis() - startWaitTime) / 1000;
