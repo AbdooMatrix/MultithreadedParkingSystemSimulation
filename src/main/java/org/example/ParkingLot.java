@@ -1,62 +1,60 @@
 package org.example;
 
 
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 
-class ParkingLot {
-    int size=4;
-    private final Semaphore space = new Semaphore(4); ;
-    private final Semaphore element= new Semaphore(0);;
-    private final AtomicInteger occupiedSpots = new AtomicInteger(0); // Tracks currently parked cars
-    private final AtomicInteger totalCarsServed = new AtomicInteger(0); // Tracks total cars served
+public class ParkingLot {
+    int size = 4;
+    private final Object[] store = new Object[size];
 
+    private int inptr = 0  ;
+    private int outptr = 0 ;
 
-    // Method to simulate parking a car
-    public void parkCar(String carName, int parkDuration) throws InterruptedException {
-        long startWaitTime = System.currentTimeMillis();
+    private final ReentrantLock printLock = new ReentrantLock();
 
-        // Try to park the car
-        if (space.getvalue() > 0) { // If a spot is available, park immediately
-            space.P(); // Acquire a parking spot
-            log(carName + " parked. (Parking Status: " + occupiedSpots.incrementAndGet() + " spots occupied)");
-            element.V(); // Indicate a car is parked
-            totalCarsServed.incrementAndGet();
+    Semaphore spaces = new Semaphore(size);
 
-            // Simulate the parking duration
-            Thread.sleep(parkDuration * 1000);
+    Semaphore elements = new Semaphore(0);
 
-            // Car leaves
-            occupiedSpots.decrementAndGet();
-            log(carName + " left after " + parkDuration + " units of time. (Parking Status: " + occupiedSpots.get() + " spots occupied)");
-            element.P(); // Indicate a car has left
-            space.V(); // Release the parking spot
-        } else {
-            // Car waits for a spot
-            log(carName + " waiting for a spot.");
-            space.P(); // Wait until a spot is available
+    public void parkCar(String carName, int parkDuration, int arriveTime) throws InterruptedException {
 
-            long waitedTime = (System.currentTimeMillis() - startWaitTime) / 1000;
-            waitedTime++;
-            log(carName + " parked after waiting for " + waitedTime + " units of time. (Parking Status: " + occupiedSpots.incrementAndGet() + " spots occupied)");
-            element.V(); // Signal that a car has parked
-            totalCarsServed.incrementAndGet();
-            // Simulate parking duration
-            Thread.sleep(parkDuration * 1000);
-            // Car leaves
-            occupiedSpots.decrementAndGet();
-            log(carName + " left after " + parkDuration + " units of time. (Parking Status: " + occupiedSpots.get() + " spots occupied)");
-            element.P(); // Signal that a car has left
-            space.V(); // Release the parking spot
+        printLock.lock();
+
+        System.out.println(carName + " arrived at time " + arriveTime);
+
+        int waitTime = spaces.P();
+        store[inptr] = carName;
+
+        if(waitTime == 0){
+            System.out.print(carName + " parked");
+            System.out.print(" (Parking Status: " + (size-spaces.value) + " spots occupied) \n");
+            printLock.unlock();
         }
-    }
+        else{
+            System.out.println(carName + " waiting for a spot");
+            printLock.unlock();
 
-    private void log(String message) {
-        System.out.println(message);
-    }
+            Thread.sleep(waitTime * 1000);
+            printLock.lock();
+            System.out.print(carName + " parked after waiting for " + waitTime + " units of time ");
+            System.out.print(" (Parking Status: " + (size-spaces.value) + " spots occupied) \n");
+            printLock.unlock();
+        }
 
-    public int getTotalCarsServed() {
-        return totalCarsServed.get();
+
+        inptr = (inptr + 1) % size ;
+        elements.V(); // no of cars increase
+
+        Thread.sleep(parkDuration * 1000);
+        elements.P(); // car is released.
+        store[outptr] = null;
+        outptr = (outptr + 1) % size;
+        spaces.V();
+
+        printLock.lock();
+        System.out.print(carName + " left after " + parkDuration  + " units of time");
+        System.out.print(" (Parking Status: " + (size-spaces.value) + " spots occupied) \n");
+        printLock.unlock();
     }
 }
 
