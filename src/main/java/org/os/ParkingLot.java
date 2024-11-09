@@ -59,7 +59,15 @@ class ParkingLot {
         System.out.println(message);
     }
 
-    public int getTotalCarsServed() {
-        return totalCarsServed.get();
+
+
+    public void printSummary(){
+        System.out.println("Simulation finished. Total cars served: " + totalCarsServed.get() );
+        System.out.println("Current cars in parking = " + occupiedSpots.get() );
+        System.out.println("Details : ");
+        System.out.println("Gate 1 : ");
+        System.out.println("Gate 2 : ");
+        System.out.println("Gate 3 : ");
+
     }
 }
