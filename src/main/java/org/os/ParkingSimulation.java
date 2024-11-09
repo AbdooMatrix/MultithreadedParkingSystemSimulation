@@ -1,31 +1,77 @@
 package org.os;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class ParkingSimulation {
-    public static void main(String[] args) {
-        ParkingLot lot = new ParkingLot();
 
-        try (BufferedReader br = new BufferedReader(new FileReader("input.txt"))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                // Parse each line into gate, car name, arrival time, and park duration
-                String[] parts = line.split(", ");
-                String carName = parts[0] + ", " + parts[1];
-                int arrivalTime = Integer.parseInt(parts[2].split(" ")[1]);
-                int parkDuration = Integer.parseInt(parts[3].split(" ")[1]);
+    static ParkingLot lot = new ParkingLot();
+    static List<Car> cars = new ArrayList<>();
 
-                // Create and start a new Car thread
-                Car car = new Car(carName, arrivalTime, parkDuration, lot);
-                car.start();
+    private static Car parseInput(String line) {
+        int gate = 0 ;
+        int id  = 0  ;
+        int arriveTime = 0  ;
+        int parkingDuration = 0 ;
+
+
+        String[] parts = line.split(","); // separate line according to comma (,)
+
+        for (String part : parts) {
+            part = part.trim();
+            if (part.startsWith("Gate")) {
+                gate = Integer.parseInt(part.split(" ")[1]) ;
+            } else if (part.startsWith("Car")) {
+                id = Integer.parseInt(part.split(" ")[1]) ;
+            } else if (part.startsWith("Arrive")) {
+                arriveTime = Integer.parseInt(part.split(" ")[1]) ;
+            } else if (part.startsWith("Parks")) {
+                parkingDuration = Integer.parseInt(part.split(" ")[1]) ;
             }
-        } catch (IOException e) {
+        }
+        Car car = new Car(gate , id , arriveTime , parkingDuration , lot);
+        return car;
+    }
+
+    private static void readFromFile(String fileName) {
+        try {
+            File file = new File(fileName);
+            Scanner fileScanner = new Scanner(file);
+
+            while (fileScanner.hasNextLine()) {
+                String line = fileScanner.nextLine();
+                cars.add(parseInput(line));
+            }
+            fileScanner.close();
+
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found: " + fileName);
             e.printStackTrace();
         }
+    }
 
-        // Report total cars served after all threads have finished
+    public static void main(String[] args) throws InterruptedException {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Welcome to Parking System Simulator, Please enter file name: ");
+        String fileName = sc.nextLine();
+
+        readFromFile(fileName);
+
+
+        for(Car car : cars){
+            car.start();
+        }
+
+        for (Car car : cars) {
+            car.join();
+        }
+
         System.out.println("Simulation finished. Total cars served: " + lot.getTotalCarsServed());
+
+        sc.close();
     }
 }

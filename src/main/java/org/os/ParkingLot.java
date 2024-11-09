@@ -11,7 +11,9 @@ class ParkingLot {
 
 
     // Method to simulate parking a car
-    public void parkCar(String carName, int parkDuration) throws InterruptedException {
+    public void parkCar(String carName, int parkDuration, int arrivalTime) throws InterruptedException {
+        System.out.println(carName + " arrived at time " + arrivalTime);
+
         long startWaitTime = System.currentTimeMillis();
 
         // Try to park the car
