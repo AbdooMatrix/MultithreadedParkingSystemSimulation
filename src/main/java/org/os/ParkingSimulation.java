@@ -9,9 +9,6 @@ public class ParkingSimulation {
 
     static ParkingLot lot = new ParkingLot();
     static List<Car> cars = new ArrayList<>();
-    static Gate g1 = new Gate();
-    static Gate g2 = new Gate();
-    static Gate g3 = new Gate();
 
     private static Car parseInput(String line) {
         int gate = 0 ;
@@ -26,11 +23,6 @@ public class ParkingSimulation {
             part = part.trim();
             if (part.startsWith("Gate")) {
                 gate = Integer.parseInt(part.split(" ")[1]) ;
-
-                if(gate == 1){ g1.incrementServedCars();}
-                else if(gate == 2){ g2.incrementServedCars();}
-                else if (gate == 3 ) { g3.incrementServedCars(); }
-
             } else if (part.startsWith("Car")) {
                 id = Integer.parseInt(part.split(" ")[1]) ;
             } else if (part.startsWith("Arrive")) {
@@ -77,7 +69,7 @@ public class ParkingSimulation {
             car.join();
         }
 
-
+        lot.printSummary();
 
         sc.close();
     }

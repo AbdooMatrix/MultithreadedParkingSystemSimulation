@@ -4,15 +4,23 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 
 class ParkingLot {
-    int size=4;
+    int size = 4;
     private final Semaphore space = new Semaphore(4); ;
     private final Semaphore element= new Semaphore(0);;
     private final AtomicInteger occupiedSpots = new AtomicInteger(0); // Tracks currently parked cars
     private final AtomicInteger totalCarsServed = new AtomicInteger(0); // Tracks total cars served
     private final ReentrantLock printLock = new ReentrantLock();
+    static Gate g1 = new Gate();
+    static Gate g2 = new Gate();
+    static Gate g3 = new Gate();
 
     // Method to simulate parking a car
-    public void parkCar(String carName, int parkDuration, int arrivalTime) throws InterruptedException {
+    public void parkCar(String carName, int parkDuration, int arrivalTime, int gate) throws InterruptedException {
+
+        if(gate == 1){ g1.incrementServedCars();}
+        else if(gate == 2){ g2.incrementServedCars();}
+        else if (gate == 3 ) { g3.incrementServedCars(); }
+
         printLock.lock();
         System.out.println(carName + " arrived at time " + arrivalTime);
 
@@ -62,12 +70,11 @@ class ParkingLot {
 
 
     public void printSummary(){
-        System.out.println("Simulation finished. Total cars served: " + totalCarsServed.get() );
+        System.out.println("\nSimulation finished. \nTotal cars served: " + totalCarsServed.get() );
         System.out.println("Current cars in parking = " + occupiedSpots.get() );
-        System.out.println("Details : ");
-        System.out.println("Gate 1 : ");
-        System.out.println("Gate 2 : ");
-        System.out.println("Gate 3 : ");
-
+        System.out.println("Details: ");
+        System.out.println("Gate 1 served " + g1.getServedCars() + " cars.");
+        System.out.println("Gate 2 served " + g2.getServedCars() + " cars.");
+        System.out.println("Gate 3 served " + g3.getServedCars() + " cars.");
     }
 }

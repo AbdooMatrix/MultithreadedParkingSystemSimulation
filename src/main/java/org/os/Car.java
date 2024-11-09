@@ -20,7 +20,7 @@ class Car extends Thread {
         try {
             Thread.sleep(arrivalTime * 1000); // Simulate arrival delay
             String carName = "Car " + id + " from Gate " + gate;
-            parkingLot.parkCar(carName, parkDuration, arrivalTime);
+            parkingLot.parkCar(carName, parkDuration, arrivalTime, gate);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
