@@ -1,3 +1,9 @@
+// Team Members:
+// Abdelrahman Mostafa Sayed - 20220197
+// Omar Mohamed El-Sayed - 20221109
+// Donia Kareem Mohamed - 20221051
+// Asmaa Yasser Hussein - 20221022
+
 package org.os;
 
 import java.io.*;
@@ -77,6 +83,7 @@ public class ParkingSimulation {
         for (Car car : cars) {
             car.join();
         }
+
         Thread.sleep(1000);
 
         // Display simulation summary
