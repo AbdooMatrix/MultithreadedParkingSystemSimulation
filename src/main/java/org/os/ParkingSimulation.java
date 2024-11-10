@@ -77,6 +77,7 @@ public class ParkingSimulation {
         for (Car car : cars) {
             car.join();
         }
+        Thread.sleep(1000);
 
         // Display simulation summary
         lot.printSummary();

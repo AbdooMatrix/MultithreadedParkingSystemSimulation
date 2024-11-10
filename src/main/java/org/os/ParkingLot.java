@@ -47,8 +47,7 @@ class ParkingLot {
             log(carName + " waiting for a spot.");
             printLock.unlock();
             space.P(); // Wait until a spot is available
-            long waitedTime = (System.currentTimeMillis() - startWaitTime) / 1000;
-            waitedTime++;
+            long waitedTime = (System.currentTimeMillis() - startWaitTime+(999)) / 1000;
             log(carName + " parked after waiting for " + waitedTime + " units of time. (Parking Status: " + occupiedSpots.incrementAndGet() + " spots occupied)");
 
             totalCarsServed.incrementAndGet();
