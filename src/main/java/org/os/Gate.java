@@ -1,20 +1,17 @@
 package org.os;
 
 public class Gate {
-    int servedCars ;
+    int servedCars;
 
-
-
-    Gate(){
-        servedCars = 0 ;
+    Gate() {
+        servedCars = 0; // Initialize served car count to zero
     }
 
     public void incrementServedCars() {
-        servedCars++ ;
+        servedCars++; // Increment served cars count
     }
 
-
     public int getServedCars() {
-        return servedCars ;
+        return servedCars; // Return total served cars
     }
 }

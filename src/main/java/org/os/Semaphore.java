@@ -3,25 +3,26 @@ package org.os;
 class Semaphore {
     private int value;
 
+    // Initialize semaphore with a given number of permits
     public Semaphore(int permits) {
         this.value = permits;
     }
 
-    // Acquire a permit
+    // Acquire a permit, blocking if none are available
     public synchronized void P() throws InterruptedException {
         while (value == 0) {
-            wait(); // Wait until a permit is available
+            wait(); // Block until a permit is available
         }
-        value--; // Decrease the available permit count
+        value--; // Decrease the permit count
     }
 
-    // Release a permit
+    // Release a permit, waking up a waiting thread if necessary
     public synchronized void V() {
-        value++; // Increase the available permit count
-        notify(); // Notify a waiting thread that a permit has become available
+        value++; // Increase the permit count
+        notify(); // Notify a waiting thread
     }
 
-    // Method to get current permits for debugging
+    // Get current permit count (for debugging)
     public synchronized int getvalue() {
         return value;
     }
