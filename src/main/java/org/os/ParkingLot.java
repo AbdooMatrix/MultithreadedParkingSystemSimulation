@@ -48,8 +48,7 @@ class ParkingLot {
             space.P(); // Wait until a parking spot is available
 
             // Calculate how long the car waited
-            long waitedTime = (System.currentTimeMillis() - startWaitTime) / 1000;
-            waitedTime++;
+            long waitedTime = (System.currentTimeMillis() - startWaitTime + 999) / 1000; // Ensures waited time rounds up
             log(carName + " parked after waiting for " + waitedTime + " units of time. (Parking Status: " + occupiedSpots.incrementAndGet() + " spots occupied)");
             element.V(); // Signal that the car is now parked
             totalCarsServed.incrementAndGet();
