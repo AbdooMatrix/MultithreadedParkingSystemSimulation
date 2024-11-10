@@ -18,9 +18,9 @@ class Car extends Thread {
     @Override
     public void run() {
         try {
-            Thread.sleep(arrivalTime * 1000); // Simulate arrival delay
+            Thread.sleep(arrivalTime * 1000); // Wait until arrival time
             String carName = "Car " + id + " from Gate " + gate;
-            parkingLot.parkCar(carName, parkDuration, arrivalTime, gate);
+            parkingLot.parkCar(carName, parkDuration, arrivalTime, gate); // Attempt to park
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
