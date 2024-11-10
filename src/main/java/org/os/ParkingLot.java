@@ -5,8 +5,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 class ParkingLot {
     int size = 4;
-    private final Semaphore space = new Semaphore(4); ;
-    private final Semaphore element= new Semaphore(0);;
+    private final Semaphore space = new Semaphore(4);
+
     private final AtomicInteger occupiedSpots = new AtomicInteger(0); // Tracks currently parked cars
     private final AtomicInteger totalCarsServed = new AtomicInteger(0); // Tracks total cars served
     private final ReentrantLock printLock = new ReentrantLock();
@@ -31,7 +31,7 @@ class ParkingLot {
             space.P(); // Acquire a parking spot
             log(carName + " parked. (Parking Status: " + occupiedSpots.incrementAndGet() + " spots occupied)");
             printLock.unlock();
-            element.V(); // Indicate a car is parked
+
             totalCarsServed.incrementAndGet();
 
             // Simulate the parking duration
@@ -40,25 +40,24 @@ class ParkingLot {
             // Car leaves
             occupiedSpots.decrementAndGet();
             log(carName + " left after " + parkDuration + " units of time. (Parking Status: " + occupiedSpots.get() + " spots occupied)");
-            element.P(); // Indicate a car has left
+
             space.V(); // Release the parking spot
         } else {
             // Car waits for a spot
             log(carName + " waiting for a spot.");
             printLock.unlock();
             space.P(); // Wait until a spot is available
-
             long waitedTime = (System.currentTimeMillis() - startWaitTime) / 1000;
             waitedTime++;
             log(carName + " parked after waiting for " + waitedTime + " units of time. (Parking Status: " + occupiedSpots.incrementAndGet() + " spots occupied)");
-            element.V(); // Signal that a car has parked
+
             totalCarsServed.incrementAndGet();
             // Simulate parking duration
             Thread.sleep(parkDuration * 1000);
             // Car leaves
             occupiedSpots.decrementAndGet();
             log(carName + " left after " + parkDuration + " units of time. (Parking Status: " + occupiedSpots.get() + " spots occupied)");
-            element.P(); // Signal that a car has left
+
             space.V(); // Release the parking spot
         }
     }
