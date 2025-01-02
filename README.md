@@ -1,20 +1,19 @@
-HealthCare Management System
+# Multithreaded Parking System Simulation
 
-A comprehensive healthcare management system designed to handle appointment scheduling, doctor management, and patient queries. The system supports efficient management of medical data and resources, offering a user-friendly interface for healthcare professionals and patients.
+This project simulates a parking system using multithreading techniques to manage parking slots, vehicle entry, and exit. It demonstrates concurrent programming concepts in Java by simulating a system where multiple vehicles can park and exit concurrently, handling resource contention and synchronization.
 
-Features:
-- Doctor and appointment management
-- Patient query handling
-- System for scheduling and tracking appointments
+### Features:
+- Multithreaded simulation of parking system
+- Vehicle entry and exit management
+- Synchronization of parking slot usage
 
-Technologies:
-- C++
-- CMake
+### Technologies:
+- Java
 
-Setup:
+### Setup:
 1. Clone the repository: `git clone <repo-url>`
-2. Build the project: `cmake .`
-3. Run the system: `./HealthCareManagementSystem`
+2. Build the project: `mvn clean install`
+3. Run the simulation: `java -jar ParkingSystemSimulation.jar`
 
-License:
+### License:
 MIT License
